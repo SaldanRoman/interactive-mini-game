@@ -1,0 +1,1 @@
+export type CellStatus = 'blue' | 'yellow' | 'green' | 'red';

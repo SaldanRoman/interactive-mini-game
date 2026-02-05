@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 20px;
+
+  .scoreboard {
+    display: flex;
+    justify-content: space-between;
+
+  .score {
+    font-weight: bold;
+  }
+}
+}
+
