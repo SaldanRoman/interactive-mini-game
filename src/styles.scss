@@ -1,3 +1,21 @@
+// Design tokens
+$primary: #3498db;
+$yellow: #f1c40f;
+$green: #2ecc71;
+$red: #e74c3c;
+$bg-color: #f4f7f6;
+$text-color: #2c3e50;
+$font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+// Spacing
+$space-sm: 8px;
+$space-md: 20px;
+$space-lg: 30px;
+
+// Radii
+$radius-sm: 4px;
+$radius-md: 8px;
+
 body {
   margin: 0;
   padding: 0;
@@ -5,12 +23,13 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f4f7f6;
-  color: #2c3e50;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: $bg-color;
+  color: $text-color;
+  font-family: $font-stack;
 
 }
 
 * {
   box-sizing: border-box;
 }
+

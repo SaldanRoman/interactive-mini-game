@@ -9,8 +9,8 @@
 
   .modal-content {
     background: white;
-    padding: 30px;
-    border-radius: 8px;
+    padding: $space-lg;
+    border-radius: $radius-md;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 
@@ -18,10 +18,10 @@
       margin-top: 10px;
       padding: 10px 20px;
       font-size: 16px;
-      background-color: #3498db;
+      background-color: $primary;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: $radius-sm;
       cursor: pointer;
     }
   }
