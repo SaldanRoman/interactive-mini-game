@@ -25,8 +25,8 @@ describe('ResultModalComponent', () => {
   });
 
   it('should emit close when onCloseModal is called', () => {
-    spyOn(component.close, 'emit');
+    spyOn(component.closed, 'emit');
     component.onCloseModal();
-    expect(component.close.emit).toHaveBeenCalled();
+    expect(component.closed.emit).toHaveBeenCalled();
   });
 });

@@ -26,13 +26,13 @@ export class GameBoardComponent implements OnInit {
   private gameService = inject(GameService);
   private destroyRef = inject(DestroyRef);
 
-  grid$: BehaviorSubject<CellStatus[]> | undefined;
+  public grid$: BehaviorSubject<CellStatus[]> | undefined;
 
-  nValue: number = 1000;
-  isGameActive: boolean = false;
-  winner: string | null = null;
+  public nValue: number = 1000;
+  public isGameActive: boolean = false;
+  public winner: string | null = null;
 
-ngOnInit() { 
+public ngOnInit() { 
   this.grid$ = this.gameService.grid;
   
   this.gameService.gameEnded.pipe(
@@ -43,17 +43,17 @@ ngOnInit() {
  });
 }
 
-onStart() {
+public onStart() {
   this.winner = null;
   this.isGameActive = true;
   this.gameService.startGame(this.nValue);
 }
 
-cellClicked(index: number) {
+public cellClicked(index: number) {
   this.gameService.onCellClicked(index);
 }
 
-closeModal() {
+public closeModal() {
   this.winner = null;
 }
 

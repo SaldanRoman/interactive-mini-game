@@ -12,10 +12,10 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 })
 export class ResultModalComponent {
-  @Input() winner: string | null = null;
-  @Output() close = new EventEmitter<void>();
+  @Input() public winner: string | null = null;
+  @Output() public closed = new EventEmitter<void>();
 
-  onCloseModal() {
-    this.close.emit();
+  public onCloseModal(): void {
+    this.closed.emit();
   }
 }

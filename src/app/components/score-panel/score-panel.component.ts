@@ -16,10 +16,10 @@ import { CommonModule } from "@angular/common";
 export class ScorePanelComponent implements OnInit {
     private gameService = inject(GameService);
     
-    playerScore$: BehaviorSubject<number> | undefined;
-    computerScore$: BehaviorSubject<number> | undefined;
+    public playerScore$: BehaviorSubject<number> | undefined;
+    public computerScore$: BehaviorSubject<number> | undefined;
 
-    ngOnInit() {
+    public ngOnInit() {
         this.playerScore$ = this.gameService.playerScore;
         this.computerScore$ = this.gameService.computerScore;
    }

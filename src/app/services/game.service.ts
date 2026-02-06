@@ -4,19 +4,17 @@ import { CellStatus } from '../models/cell.type';
 
 @Injectable()
 export class GameService {
-  grid = new BehaviorSubject<CellStatus[]>(new Array(100).fill('blue'));
-  playerScore = new BehaviorSubject<number>(0);
-  computerScore = new BehaviorSubject<number>(0);
-  gameEnded = new Subject<string>(); 
+  public grid = new BehaviorSubject<CellStatus[]>(new Array(100).fill('blue'));
+  public playerScore = new BehaviorSubject<number>(0);
+  public computerScore = new BehaviorSubject<number>(0);
+  public gameEnded = new Subject<string>();
 
   private timerId: ReturnType<typeof setTimeout> | undefined;
   private currentIndex: number = -1;
   private timeLimit: number = 1000;
   private availableIndices: number[] = [];
 
-  constructor() {}
-
-  startGame(n: number) {
+  public startGame(n: number) {
     this.timeLimit = n;
     this.resetGame();
     this.nextRound();
@@ -48,7 +46,7 @@ export class GameService {
     }, this.timeLimit);
   }
 
-  onCellClicked(index: number) {
+  public onCellClicked(index: number) {
     if (index === this.currentIndex && this.grid.value[index] === 'yellow') {
       clearTimeout(this.timerId);
       const currentGrid = this.grid.value;
