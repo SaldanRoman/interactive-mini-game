@@ -1,6 +1,7 @@
-<div class="modal-overlay">
-  <div class="modal-content">
-    <h2>{{ winner }} Wins!</h2>
-    <button class="close-button" (click)="onCloseModal()">Close</button>
-  </div>
-</div>
+<mat-dialog-content>
+  <p>{{ data?.winner }} has reached 10 points!</p>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="primary" (click)="onCloseModal()">Close</button>
+</mat-dialog-actions>

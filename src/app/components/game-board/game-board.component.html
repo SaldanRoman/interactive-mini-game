@@ -1,11 +1,14 @@
 <div class="game-container">
-  <div class="controls">
-    <div class="input-group">
-      <label for="timeLimit">Time (ms):</label>
-      <input type="number" id="timeLimit" [(ngModel)]="nValue" [disabled]="isGameActive">
-    </div>
-    <button class="start-button" [disabled]="isGameActive" (click)="onStart()">Start</button>
-  </div>
+<div class="controls">
+  <mat-form-field appearance="outline">
+    <mat-label>Reaction Time (ms)</mat-label>
+    <input matInput type="number" [(ngModel)]="nValue" [disabled]="isGameActive">
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="onStart()" [disabled]="isGameActive">
+    START GAME
+  </button>
+</div>
 
   <app-score-panel></app-score-panel>
 
@@ -19,7 +22,3 @@
     }
   </div>
 </div>
-
-@if (winner) {
-    <app-result-modal [winner]="winner" (closed)="closeModal()"></app-result-modal>
-}

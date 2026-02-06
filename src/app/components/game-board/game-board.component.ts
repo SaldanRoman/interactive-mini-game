@@ -7,6 +7,10 @@ import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 import { ScorePanelComponent } from "../score-panel/score-panel.component";
 import { ResultModalComponent } from "../result-modal/result-modal.component";
 import { CellStatus } from "../../models/cell.type";
+import { MatButtonModule } from "@angular/material/button";
+import { MatDialog } from "@angular/material/dialog";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
 
 @Component({
   selector: 'app-game-board',
@@ -18,6 +22,9 @@ import { CellStatus } from "../../models/cell.type";
     FormsModule,
     ScorePanelComponent,
     ResultModalComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
   ],
   providers: [GameService],
 })
@@ -25,6 +32,7 @@ import { CellStatus } from "../../models/cell.type";
 export class GameBoardComponent implements OnInit {
   private gameService = inject(GameService);
   private destroyRef = inject(DestroyRef);
+  private dialog = inject(MatDialog)
 
   public grid$: BehaviorSubject<CellStatus[]> | undefined;
 
@@ -38,7 +46,10 @@ public ngOnInit() {
   this.gameService.gameEnded.pipe(
     takeUntilDestroyed(this.destroyRef)
   ).subscribe(res => {
-    this.winner = res;
+    this.dialog.open(ResultModalComponent, {
+        data: { winner: res }
+    })
+    
     this.isGameActive = false;
  });
 }

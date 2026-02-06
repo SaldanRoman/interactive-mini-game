@@ -15,13 +15,6 @@
 
   .start-button {
     margin-top: 10px;
-    padding: $space-sm $space-md;
-    font-size: 16px;
-    background-color: $primary;
-    color: $button-text-color;
-    border: none;
-    border-radius: $radius-sm;
-    cursor: pointer;
   }
 }
 
@@ -29,7 +22,7 @@
   display: grid;
   grid-template-columns: repeat(10, 1fr); 
   gap: $space-sm;
-  width: 95vw;
+  width: 85vw;
   max-width: 600px;
   margin: 20px auto;
 
@@ -45,7 +38,6 @@
       transform: scale(1.02);
     }
 
-    &.blue   { background-color: #3498db; }
     &.blue   { background-color: $primary; }
     &.yellow { background-color: $yellow; }
     &.green  { background-color: $green; cursor: default; }
