@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  width: 100%;
 }
 
 .controls {
@@ -24,21 +25,27 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 4px;
-  width: 100%;
+  grid-template-columns: repeat(10, 1fr); 
+  gap: 8px;
+  width: 95vw;
   max-width: 1000px;
-  margin-top: 20px;
+  margin: 20px auto;
 
   .cell {
-    aspect-ratio: 1;
-    border: 1px solid #ccc;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.1s ease;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    transition: transform 0.1s ease, background-color 0.2s ease;
 
-    &.blue { background-color: #3498db; }
+    &:hover {
+      transform: scale(1.02);
+    }
+
+    &.blue   { background-color: #3498db; }
     &.yellow { background-color: #f1c40f; }
-    &.green { background-color: #2ecc71; cursor: default; }
-    &.red { background-color: #e74c3c; cursor: default; }
+    &.green  { background-color: #2ecc71; cursor: default; }
+    &.red    { background-color: #e74c3c; cursor: default; }
   }
 }
