@@ -21,11 +21,11 @@ An interactive mini-game built with **Angular** where players test their reactio
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/YOUR_USERNAME/grid-game.git](https://github.com/YOUR_USERNAME/grid-game.git)
+   git clone [https://github.com/SaldanRoman/interactive-mini-game.git]
 
 2. Navigate to the project directory:
    ```bash
-   cd grid-game
+   cd interactive-mini-game
 
 3. Install dependencies:
    ```bash

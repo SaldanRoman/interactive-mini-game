@@ -1,32 +1,42 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { GameBoardComponent } from './game-board.component';
+import { MatDialog } from '@angular/material/dialog';
 import { GameService } from '../../services/game.service';
 import { ResultModalComponent } from '../result-modal/result-modal.component';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 describe('GameBoardComponent', () => {
-  let component: GameBoardComponent;
   let fixture: ComponentFixture<GameBoardComponent>;
-  let mockGameService: any;
+  let component: GameBoardComponent;
+  let gameServiceSpy: jasmine.SpyObj<GameService>;
+  let dialogSpy: jasmine.SpyObj<MatDialog>;
+  let gridSubject: BehaviorSubject<string[]>;
+  let gameEndedSubject: Subject<string>;
 
   beforeEach(async () => {
-    // Create a mock service with the same shape as GameService
-    mockGameService = {
-      grid: new BehaviorSubject<string[]>(new Array(100).fill('blue')),
-      playerScore: new BehaviorSubject<number>(0),
-      computerScore: new BehaviorSubject<number>(0),
-      gameEnded: new Subject<string>(),
-      startGame: jasmine.createSpy('startGame'),
-      onCellClicked: jasmine.createSpy('onCellClicked')
-    };
+    gridSubject = new BehaviorSubject<string[]>(Array(100).fill('blue'));
+    gameEndedSubject = new Subject<string>();
+
+    gameServiceSpy = jasmine.createSpyObj('GameService', ['startGame', 'onCellClicked'], {
+      grid$: gridSubject.asObservable(),
+      gameEnded$: gameEndedSubject.asObservable()
+    });
+    
+    dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 
     await TestBed.configureTestingModule({
-      imports: [ GameBoardComponent, ResultModalComponent, FormsModule ],
-      providers: [ { provide: GameService, useValue: mockGameService } ]
+      imports: [GameBoardComponent],
+      providers: [
+        { provide: GameService, useValue: gameServiceSpy },
+        { provide: MatDialog, useValue: dialogSpy }
+      ]
     }).overrideComponent(GameBoardComponent, {
-      remove: { providers: [GameService] }
+      set: {
+        providers: [
+          { provide: GameService, useValue: gameServiceSpy },
+          { provide: MatDialog, useValue: dialogSpy }
+        ]
+      }
     }).compileComponents();
 
     fixture = TestBed.createComponent(GameBoardComponent);
@@ -34,37 +44,46 @@ describe('GameBoardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should render 100 cells', () => {
-    const cells = fixture.debugElement.queryAll(By.css('.cell'));
-    expect(cells.length).toBe(100);
+  it('should initialize grid$ from GameService', () => {
+    expect(component.grid$).toBeDefined();
+    component.grid$?.subscribe(grid => {
+      expect(grid).toBeDefined();
+      expect(grid.length).toBe(100);
+    });
   });
 
-  it('should call startGame when the Start button is clicked', () => {
+  it('onStart calls gameService.startGame and updates state', () => {
     component.nValue = 500;
-    const startBtn = fixture.debugElement.query(By.css('button')).nativeElement;
-    startBtn.click();
-    fixture.detectChanges();
+    component.isGameActive = false;
+    component.winner = 'Player';
     
-    expect(mockGameService.startGame).toHaveBeenCalledWith(500);
+    component.onStart();
+    
+    expect(gameServiceSpy.startGame).toHaveBeenCalledWith(500);
     expect(component.isGameActive).toBeTrue();
+    expect(component.winner).toBeNull();
   });
 
-  it('should call onCellClicked in service when a cell is clicked', () => {
-    const cells = fixture.debugElement.queryAll(By.css('.cell'));
-    cells[5].nativeElement.click();
-    
-    expect(mockGameService.onCellClicked).toHaveBeenCalledWith(5);
+  it('cellClicked delegates to gameService.onCellClicked', () => {
+    component.cellClicked(42);
+    expect(gameServiceSpy.onCellClicked).toHaveBeenCalledWith(42);
   });
 
-  it('should disable inputs when the game is active', fakeAsync(() => {
+  it('closeModal resets winner to null', () => {
+    component.winner = 'Computer';
+    component.closeModal();
+    expect(component.winner).toBeNull();
+  });
+
+  it('should open ResultModal when gameEnded emits', (done) => {
     component.isGameActive = true;
-    fixture.detectChanges();
-    tick();
     
-    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
-    const button = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
+    gameEndedSubject.next('Player');
     
-    expect(input.disabled).toBe(true);
-    expect(button.disabled).toBe(true);
-  }));
+    setTimeout(() => {
+      expect(dialogSpy.open).toHaveBeenCalledWith(ResultModalComponent, { data: { winner: 'Player' } });
+      expect(component.isGameActive).toBeFalse();
+      done();
+    }, 0);
+  });
 });

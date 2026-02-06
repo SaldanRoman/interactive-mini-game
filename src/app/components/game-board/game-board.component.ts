@@ -3,7 +3,6 @@ import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { GameService } from "../../services/game.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 import { ScorePanelComponent } from "../score-panel/score-panel.component";
 import { ResultModalComponent } from "../result-modal/result-modal.component";
 import { CellStatus } from "../../models/cell.type";
@@ -11,6 +10,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-game-board',
@@ -34,16 +34,16 @@ export class GameBoardComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private dialog = inject(MatDialog)
 
-  public grid$: BehaviorSubject<CellStatus[]> | undefined;
+  public grid$: Observable<CellStatus[]> | undefined;
 
   public nValue: number = 1000;
   public isGameActive: boolean = false;
   public winner: string | null = null;
 
 public ngOnInit() { 
-  this.grid$ = this.gameService.grid;
+  this.grid$ = this.gameService.grid$;
   
-  this.gameService.gameEnded.pipe(
+  this.gameService.gameEnded$.pipe(
     takeUntilDestroyed(this.destroyRef)
   ).subscribe(res => {
     this.dialog.open(ResultModalComponent, {

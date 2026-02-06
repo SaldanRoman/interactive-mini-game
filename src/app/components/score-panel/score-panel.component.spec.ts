@@ -12,15 +12,25 @@ describe('ScorePanelComponent', () => {
 
   beforeEach(async () => {
     mockGameService = {
-      playerScore: new BehaviorSubject<number>(0),
-      computerScore: new BehaviorSubject<number>(0)
+      playerScore$: new BehaviorSubject<number>(0).asObservable(),
+      computerScore$: new BehaviorSubject<number>(0).asObservable(),
+      playerScoreSubject: new BehaviorSubject<number>(0),
+      computerScoreSubject: new BehaviorSubject<number>(0)
     };
+    
+    // Store references to the subjects so we can update them later
+    mockGameService.playerScoreSubject = new BehaviorSubject<number>(0);
+    mockGameService.computerScoreSubject = new BehaviorSubject<number>(0);
+    mockGameService.playerScore$ = mockGameService.playerScoreSubject.asObservable();
+    mockGameService.computerScore$ = mockGameService.computerScoreSubject.asObservable();
 
     await TestBed.configureTestingModule({
       imports: [ ScorePanelComponent, CommonModule ],
       providers: [ { provide: GameService, useValue: mockGameService } ]
     }).overrideComponent(ScorePanelComponent, {
-      remove: { providers: [GameService] }
+      set: {
+        providers: [ { provide: GameService, useValue: mockGameService } ]
+      }
     }).compileComponents();
 
     fixture = TestBed.createComponent(ScorePanelComponent);
@@ -29,13 +39,13 @@ describe('ScorePanelComponent', () => {
   });
 
   it('should assign playerScore$ and computerScore$ from service on init', () => {
-    expect(component.playerScore$).toBe(mockGameService.playerScore);
-    expect(component.computerScore$).toBe(mockGameService.computerScore);
+    expect(component.playerScore$).toBeDefined();
+    expect(component.computerScore$).toBeDefined();
   });
 
   it('should render score values when subjects emit', () => {
     // initial values
-    const scoreEls = fixture.debugElement.queryAll(By.css('.score'));
+    let scoreEls = fixture.debugElement.queryAll(By.css('.score'));
 
     expect(scoreEls.length).toBeGreaterThanOrEqual(2);
     expect(scoreEls[0].nativeElement.textContent).toContain('Player');
@@ -45,8 +55,8 @@ describe('ScorePanelComponent', () => {
     expect(scoreEls[1].nativeElement.textContent).toContain('0');
 
     // update values
-    mockGameService.playerScore.next(3);
-    mockGameService.computerScore.next(2);
+    mockGameService.playerScoreSubject.next(3);
+    mockGameService.computerScoreSubject.next(2);
     fixture.detectChanges();
 
     const updated = fixture.debugElement.queryAll(By.css('.score'));

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { Observable } from "rxjs";
 import { GameService } from "../../services/game.service";
 import { CommonModule } from "@angular/common";
 
@@ -16,12 +16,12 @@ import { CommonModule } from "@angular/common";
 export class ScorePanelComponent implements OnInit {
     private gameService = inject(GameService);
     
-    public playerScore$: BehaviorSubject<number> | undefined;
-    public computerScore$: BehaviorSubject<number> | undefined;
+    public playerScore$: Observable<number> | undefined;
+    public computerScore$: Observable<number> | undefined;
 
     public ngOnInit() {
-        this.playerScore$ = this.gameService.playerScore;
-        this.computerScore$ = this.gameService.computerScore;
+        this.playerScore$ = this.gameService.playerScore$;
+        this.computerScore$ = this.gameService.computerScore$;
    }
 
 }
