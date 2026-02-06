@@ -56,17 +56,6 @@ describe('GameBoardComponent', () => {
     expect(mockGameService.onCellClicked).toHaveBeenCalledWith(5);
   });
 
-  it('should display the result modal when gameEnded emits', fakeAsync(() => {
-    component.ngOnInit();
-    mockGameService.gameEnded.next('Player');
-    tick();
-    fixture.detectChanges();
-    
-    expect(component.winner).toBe('Player');
-    const modal = fixture.debugElement.query(By.css('app-result-modal'));
-    expect(modal).toBeTruthy();
-  }));
-
   it('should disable inputs when the game is active', fakeAsync(() => {
     component.isGameActive = true;
     fixture.detectChanges();

@@ -1,14 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ResultModalComponent } from './result-modal.component';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 describe('ResultModalComponent', () => {
   let component: ResultModalComponent;
   let fixture: ComponentFixture<ResultModalComponent>;
+  let dialogRefSpy: { close: jasmine.Spy };
 
   beforeEach(async () => {
+    dialogRefSpy = { close: jasmine.createSpy('close') };
+
     await TestBed.configureTestingModule({
-      imports: [ ResultModalComponent ]
+      imports: [ResultModalComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: dialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: { winner: null } }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ResultModalComponent);
@@ -16,17 +24,16 @@ describe('ResultModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should display winner when `winner` input is set', () => {
-    component.winner = 'Player';
+  it('should display winner when data.winner is set', () => {
+    component.data.winner = 'Player';
     fixture.detectChanges();
 
     const el = fixture.debugElement.query(By.css('.modal')) || fixture.debugElement;
     expect(el.nativeElement.textContent).toContain('Player');
   });
 
-  it('should emit close when onCloseModal is called', () => {
-    spyOn(component.closed, 'emit');
+  it('should close dialog when onCloseModal is called', () => {
     component.onCloseModal();
-    expect(component.closed.emit).toHaveBeenCalled();
+    expect(dialogRefSpy.close).toHaveBeenCalled();
   });
 });
