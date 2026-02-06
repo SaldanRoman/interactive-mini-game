@@ -9,7 +9,7 @@ export class GameService {
   computerScore = new BehaviorSubject<number>(0);
   gameEnded = new Subject<string>(); 
 
-  private timerId: any;
+  private timerId: ReturnType<typeof setTimeout> | undefined;
   private currentIndex: number = -1;
   private timeLimit: number = 1000;
   private availableIndices: number[] = [];

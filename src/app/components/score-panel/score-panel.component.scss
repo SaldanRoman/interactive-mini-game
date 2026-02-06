@@ -1,8 +1,9 @@
+@import '../../../styles/_variables.scss';
+
 :host {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 500px;
   margin-top: $space-md;
 
   .scoreboard {
