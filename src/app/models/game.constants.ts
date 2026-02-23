@@ -4,3 +4,7 @@ export enum PlayersEnum {
 }
 
 export const playerWinScore = 10;
+
+export const inputStep = 100;
+export const inputMin = 0;
+export const inputMax = 10000;

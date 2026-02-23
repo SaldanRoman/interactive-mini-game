@@ -11,6 +11,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { Observable } from "rxjs";
+import { inputMax, inputStep, inputMin } from "../../models/game.constants";
 
 @Component({
   selector: 'app-game-board',
@@ -39,6 +40,10 @@ export class GameBoardComponent implements OnInit {
   public nValue: number = 1000;
   public isGameActive: boolean = false;
   public winner: string | null = null;
+
+  public inputStep = inputStep;
+  public inputMin = inputMin;
+  public inputMax = inputMax;
 
 public ngOnInit() { 
   this.grid$ = this.gameService.grid$;

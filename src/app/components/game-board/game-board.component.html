@@ -2,7 +2,7 @@
 <div class="controls">
   <mat-form-field appearance="outline">
     <mat-label>Reaction Time (ms)</mat-label>
-    <input matInput type="number" [(ngModel)]="nValue" [disabled]="isGameActive">
+    <input matInput type="number" [(ngModel)]="nValue" [disabled]="isGameActive" [min]="inputMin" [step]="inputStep" [max]="inputMax">
   </mat-form-field>
 
   <button mat-raised-button color="primary" (click)="onStart()" [disabled]="isGameActive">
